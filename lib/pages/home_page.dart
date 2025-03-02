@@ -39,11 +39,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  void _openConversation(int userId, int otherUserId) {
+  void _openConversation(int userId, int otherUserId, String otherUsername) {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => ConversationPage(userId: userId, otherUserId: otherUserId),
+        builder: (context) => ConversationPage(
+          userId: userId,
+          otherUserId: otherUserId,
+          otherUsername: otherUsername, // Pass the otherUsername parameter
+        ),
       ),
     );
   }
@@ -62,6 +66,7 @@ class _HomePageState extends State<HomePage> {
         itemBuilder: (context, index) {
           final user = _users[index];
           final userId = user['ID']; // Use the correct field name 'ID'
+          final username = user['Username']; // Get the username
           return Card(
             color: const Color(0xFFFFB830),
             margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -71,12 +76,12 @@ class _HomePageState extends State<HomePage> {
                 child: Icon(Icons.person, color: Colors.white),
               ),
               title: Text(
-                user['Username'],
+                username,
                 style: const TextStyle(color: Colors.black),
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.message, color: Colors.white),
-                onPressed: () => _openConversation(widget.userId, userId),
+                onPressed: () => _openConversation(widget.userId, userId, username), // Pass the username
               ),
             ),
           );

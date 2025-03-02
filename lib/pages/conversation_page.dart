@@ -5,8 +5,9 @@ import 'dart:convert';
 class ConversationPage extends StatefulWidget {
   final int userId;
   final int otherUserId;
+  final String otherUsername;
 
-  const ConversationPage({super.key, required this.userId, required this.otherUserId});
+  const ConversationPage({super.key, required this.userId, required this.otherUserId, required this.otherUsername});
 
   @override
   State<ConversationPage> createState() => _ConversationPageState();
@@ -42,7 +43,7 @@ class _ConversationPageState extends State<ConversationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Conversation', style: TextStyle(color: Colors.white)),
+        title: Text(widget.otherUsername, style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF4A1E80),
       ),
       body: _messages.isEmpty
@@ -51,9 +52,44 @@ class _ConversationPageState extends State<ConversationPage> {
         itemCount: _messages.length,
         itemBuilder: (context, index) {
           final message = _messages[index];
-          return ListTile(
-            title: Text(message['Content']),
-            subtitle: Text(message['Timestamp']),
+          final isSentByUser = message['Sender_ID'] == widget.userId;
+          final alignment = isSentByUser ? Alignment.centerRight : Alignment.centerLeft;
+          final color = isSentByUser ? const Color(0xFF4A1E80) : const Color(0xFFFFB830);
+          final icon = isSentByUser ? Icons.person : Icons.person_outline;
+
+          return Align(
+            alignment: alignment,
+            child: Container(
+              margin: const EdgeInsets.symmetric(vertical: 5.0, horizontal: 10.0),
+              padding: const EdgeInsets.all(10.0),
+              decoration: BoxDecoration(
+                color: color,
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  if (!isSentByUser) Icon(icon, color: Colors.white),
+                  if (!isSentByUser) const SizedBox(width: 10),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        message['Content'],
+                        style: const TextStyle(color: Colors.white),
+                      ),
+                      const SizedBox(height: 5),
+                      Text(
+                        message['Timestamp'],
+                        style: const TextStyle(color: Colors.white70, fontSize: 10),
+                      ),
+                    ],
+                  ),
+                  if (isSentByUser) const SizedBox(width: 10),
+                  if (isSentByUser) Icon(icon, color: Colors.white),
+                ],
+              ),
+            ),
           );
         },
       ),
