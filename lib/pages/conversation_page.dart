@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
 
 class ConversationPage extends StatefulWidget {
   final int userId;
@@ -16,11 +17,22 @@ class ConversationPage extends StatefulWidget {
 class _ConversationPageState extends State<ConversationPage> {
   List<dynamic> _messages = [];
   final TextEditingController _messageController = TextEditingController();
+  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     _fetchMessages();
+    _timer = Timer.periodic(const Duration(seconds: 1), (timer) {
+      _fetchMessages();
+    });
+  }
+
+  @override
+  void dispose() {
+    _timer?.cancel();
+    _messageController.dispose();
+    super.dispose();
   }
 
   Future<void> _fetchMessages() async {
