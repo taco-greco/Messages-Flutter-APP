@@ -2,25 +2,24 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'home_page.dart';
-import 'register.dart';
+import 'login.dart';
 
-class Login extends StatefulWidget {
-  const Login({super.key});
+class Register extends StatefulWidget {
+  const Register({super.key});
 
   @override
-  State<Login> createState() => _LoginState();
+  State<Register> createState() => _RegisterState();
 }
 
-class _LoginState extends State<Login> {
+class _RegisterState extends State<Register> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
 
-  Future<void> _login() async {
+  Future<void> _register() async {
     if (_formKey.currentState!.validate()) {
       final response = await http.post(
-        Uri.parse('http://10.0.2.2:8000/user/login'),
+        Uri.parse('http://10.0.2.2:8000/user/register'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
@@ -33,10 +32,10 @@ class _LoginState extends State<Login> {
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
+          MaterialPageRoute(builder: (context) => const Login()),
         );
       } else {
-        print('Login failed');
+        print('Registration failed');
       }
     }
   }
@@ -91,31 +90,12 @@ class _LoginState extends State<Login> {
                       },
                     ),
                     const SizedBox(height: 20),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: ElevatedButton(
-                        onPressed: _login,
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF4A1E80),
-                        ),
-                        child: const Text('Login', style: TextStyle(color: Colors.white)),
+                    ElevatedButton(
+                      onPressed: _register,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color(0xFF4A1E80),
                       ),
-                    ),
-                    const SizedBox(height: 20),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => const Register()),
-                        );
-                      },
-                      child: const Text(
-                        "Don't have an account yet? Create an account",
-                        style: TextStyle(
-                          color: Color(0xFF4A1E80),
-                          decoration: TextDecoration.underline,
-                        ),
-                      ),
+                      child: const Text('Register', style: TextStyle(color: Colors.white)),
                     ),
                   ],
                 ),
