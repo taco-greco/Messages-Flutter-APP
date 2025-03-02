@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
+import 'conversation_page.dart';
+
 class HomePage extends StatefulWidget {
   final int userId;
 
@@ -33,6 +35,15 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void _openConversation(int userId, int otherUserId) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ConversationPage(userId: userId, otherUserId: otherUserId),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -57,6 +68,10 @@ class _HomePageState extends State<HomePage> {
               title: Text(
                 user['Username'],
                 style: const TextStyle(color: Colors.black),
+              ),
+              trailing: IconButton(
+                icon: const Icon(Icons.message, color: Colors.white),
+                onPressed: () => _openConversation(widget.userId, user['id']),
               ),
             ),
           );
