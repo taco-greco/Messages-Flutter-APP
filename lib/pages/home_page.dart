@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Users', style: TextStyle(color: Colors.white),),
+        title: const Text('Users', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF4A1E80),
       ),
       body: _users.isEmpty
@@ -46,11 +46,19 @@ class _HomePageState extends State<HomePage> {
         itemCount: _users.length,
         itemBuilder: (context, index) {
           final user = _users[index];
-          return ListTile(
-            title: Text(user['Username']),
-            onTap: () {
-              // Navigate to messages page
-            },
+          return Card(
+            color: const Color(0xFFFFB830),
+            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            child: ListTile(
+              leading: const CircleAvatar(
+                backgroundColor: Colors.grey,
+                child: Icon(Icons.person, color: Colors.white),
+              ),
+              title: Text(
+                user['Username'],
+                style: const TextStyle(color: Colors.black),
+              ),
+            ),
           );
         },
       ),
