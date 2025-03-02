@@ -37,7 +37,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Users', style: TextStyle(color: Colors.white)),
+        title: const Text('QuoiApp', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF4A1E80),
       ),
       body: _users.isEmpty
