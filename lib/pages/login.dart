@@ -25,7 +25,7 @@ class _LoginState extends State<Login> {
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'mail': _emailController.text,
+          'email': _emailController.text,
           'password': _passwordController.text,
         }),
       );
