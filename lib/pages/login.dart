@@ -31,12 +31,20 @@ class _LoginState extends State<Login> {
       );
 
       if (response.statusCode == 200) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => const HomePage()),
-        );
+        final data = jsonDecode(response.body);
+        if (data['code'] == 0) {
+          final userId = data['user_id'];
+
+          Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(builder: (context) => HomePage(userId: userId)),
+          );
+        } else {
+          print('Login failed: ${data['message']}');
+        }
       } else {
-        print('Login failed');
+        print('Login failed: ${response.reasonPhrase}');
+        print('Response body: ${response.body}');
       }
     }
   }
