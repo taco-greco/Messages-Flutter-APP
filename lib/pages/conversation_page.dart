@@ -5,9 +5,9 @@ import 'dart:convert';
 class ConversationPage extends StatefulWidget {
   final int userId;
   final int otherUserId;
-  final String otherUsername; // Add this line
+  final String otherUsername;
 
-  const ConversationPage({super.key, required this.userId, required this.otherUserId, required this.otherUsername}); // Update this line
+  const ConversationPage({super.key, required this.userId, required this.otherUserId, required this.otherUsername});
 
   @override
   State<ConversationPage> createState() => _ConversationPageState();
@@ -43,7 +43,7 @@ class _ConversationPageState extends State<ConversationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(widget.otherUsername, style: const TextStyle(color: Colors.white)), // Update this line
+        title: Text(widget.otherUsername, style: const TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF4A1E80),
       ),
       body: _messages.isEmpty
