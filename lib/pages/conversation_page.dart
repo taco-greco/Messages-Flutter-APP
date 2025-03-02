@@ -22,15 +22,19 @@ class _ConversationPageState extends State<ConversationPage> {
   }
 
   Future<void> _fetchMessages() async {
-    final response = await http.get(Uri.parse('http://10.0.2.2:8000/user/getMessages/${widget.userId}/${widget.otherUserId}'));
+    final response = await http.get(Uri.parse('http://10.0.2.2:8000/message/getMessages/${widget.userId}/${widget.otherUserId}'));
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      setState(() {
-        _messages = data['messages'];
-      });
+      if (data['code'] == 0) {
+        setState(() {
+          _messages = data['messages'];
+        });
+      } else {
+        print('Failed to load messages: ${data['message']}');
+      }
     } else {
-      print('Failed to load messages');
+      print('Failed to load messages: ${response.reasonPhrase}');
     }
   }
 
@@ -48,8 +52,8 @@ class _ConversationPageState extends State<ConversationPage> {
         itemBuilder: (context, index) {
           final message = _messages[index];
           return ListTile(
-            title: Text(message['content']),
-            subtitle: Text(message['timestamp']),
+            title: Text(message['Content']),
+            subtitle: Text(message['Timestamp']),
           );
         },
       ),

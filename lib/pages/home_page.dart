@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import 'conversation_page.dart';
+import 'conversation_page.dart'; // Import the ConversationPage
 
 class HomePage extends StatefulWidget {
   final int userId;
@@ -27,11 +27,15 @@ class _HomePageState extends State<HomePage> {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      setState(() {
-        _users = data['users'];
-      });
+      if (data['code'] == 0) {
+        setState(() {
+          _users = data['users'];
+        });
+      } else {
+        print('Failed to load users: ${data['message']}');
+      }
     } else {
-      print('Failed to load users');
+      print('Failed to load users: ${response.reasonPhrase}');
     }
   }
 
@@ -57,6 +61,7 @@ class _HomePageState extends State<HomePage> {
         itemCount: _users.length,
         itemBuilder: (context, index) {
           final user = _users[index];
+          final userId = user['ID']; // Use the correct field name 'ID'
           return Card(
             color: const Color(0xFFFFB830),
             margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
@@ -71,7 +76,7 @@ class _HomePageState extends State<HomePage> {
               ),
               trailing: IconButton(
                 icon: const Icon(Icons.message, color: Colors.white),
-                onPressed: () => _openConversation(widget.userId, user['id']),
+                onPressed: () => _openConversation(widget.userId, userId),
               ),
             ),
           );
