@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'login.dart'; // Import the Login page
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -52,12 +53,25 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  void _logout() {
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => const Login()), // Navigate back to the login page
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('QuoiApp', style: TextStyle(color: Colors.white)),
         backgroundColor: const Color(0xFF4A1E80),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.logout),
+            onPressed: _logout,
+          ),
+        ],
       ),
       body: _users.isEmpty
           ? const Center(child: CircularProgressIndicator())
