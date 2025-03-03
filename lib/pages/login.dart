@@ -71,6 +71,15 @@ class _LoginState extends State<Login> {
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
+                    const Text(
+                      'Welcome to QuoiApp !',
+                      style: TextStyle(
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                        color: Color(0xFF4A1E80),
+                      ),
+                    ),
+                    const SizedBox(height: 20),
                     TextFormField(
                       controller: _emailController,
                       decoration: const InputDecoration(
